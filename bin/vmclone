@@ -1,0 +1,36 @@
+#!/bin/bash
+
+set -e
+
+TARGET=$1
+SOURCE=$2
+
+: "${SOURCE:=ubuntu1604}"
+: "${TARGET:=vm$RANDOM}"
+: "${LIBVIRT:=/var/lib/libvirt/images}"
+: "${USERDIR:=/home/sysadmin}"
+
+virt-clone                                 \
+  --connect qemu:///system                 \
+  --original $SOURCE                       \
+  --name $TARGET                           \
+  --auto-clone 
+sudo virt-customize                        \
+  --connect qemu:///system                 \
+  --add $LIBVIRT/$TARGET.qcow2             \
+  --hostname $TARGET
+sudo virt-customize                        \
+  --connect qemu:///system                 \
+  --add $LIBVIRT/$TARGET.qcow2             \
+  --mkdir $USERDIR/.ssh
+sudo virt-customize                        \
+  --connect qemu:///system                 \
+  --add $LIBVIRT/$TARGET.qcow2             \
+  --copy-in authorized_keys:$USERDIR/.ssh/
+sudo virt-customize                        \
+  --connect qemu:///system                 \
+  --add $LIBVIRT/$TARGET.qcow2             \
+  --run-command                            \
+     'echo                                 \
+     "%sudo  ALL=(ALL) NOPASSWD: ALL"      \
+     > /etc/sudoers.d/nopasswd'

@@ -1,0 +1,38 @@
+#!/bin/bash
+
+# TODO: reflow scripts to match Google guidelines
+VMROOT=$HOME'/Documents/Virtual Machines.localized'
+if [ -z "$2" ]; 
+  then 
+    SOURCE='ubuntu1610'
+  else 
+    SOURCE=$2
+fi
+
+if [ -z "$1" ];
+  then
+    NAME=vm$RANDOM
+  else
+    NAME=$1
+fi
+
+echo "Cloning $SOURCE into $NAME"
+cp -R "$VMROOT/$SOURCE.vmwarevm/" "$VMROOT/$NAME.vmwarevm/"
+for i in vmx vmxf vmsd plist nvram
+  do mv "$VMROOT/$NAME.vmwarevm/$SOURCE".$i "$VMROOT/$NAME.vmwarevm/$NAME".$i
+done
+
+echo 'uuid.action = "create"' >> "$VMROOT/$NAME.vmwarevm/$NAME.vmx"
+sed -i.bak "s/$SOURCE/$NAME/g" "$VMROOT/$NAME.vmwarevm/$NAME.vmx"
+rm "$VMROOT/$NAME.vmwarevm/$NAME.vmx.bak"
+rm -r "$VMROOT/$NAME.vmwarevm/$SOURCE.vmx.lck"
+
+echo "Starting instance..."
+vmrun start "$VMROOT/$NAME.vmwarevm/$NAME.vmx" nogui 2&>/dev/null
+until ssh -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null $SOURCE.local exit 2>/dev/null; do echo "Waiting for $NAME to start up..."; sleep 2; done
+
+ssh -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null $SOURCE.local sudo sed -i'' "s/$SOURCE/$NAME/" /etc/hosts 2>/dev/null
+ssh -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null $SOURCE.local sudo hostnamectl set-hostname $NAME 2>/dev/null
+ssh -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null $SOURCE.local sudo reboot 2>/dev/null
+
+echo "$NAME started"

@@ -1,0 +1,7 @@
+#!/bin/bash
+
+: ${1?"Usage: $0 VM_name"}
+
+for i in $@
+  do virsh -c qemu:///system shutdown $i
+done

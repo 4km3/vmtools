@@ -1,0 +1,3 @@
+#!/usr/bin/env bash
+
+virsh -c qemu:///system list --all

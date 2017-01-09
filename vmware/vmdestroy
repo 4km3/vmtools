@@ -1,0 +1,15 @@
+#!/bin/bash
+
+VMROOT=$HOME'/Documents/Virtual Machines.localized'
+if [ -z "$1" ];
+  then
+    echo 'VM name must be provided'
+    exit 0
+  else
+    NAME=$1
+  fi
+
+echo "Destroying $NAME"
+vmrun stop "$VMROOT/$NAME.vmwarevm/$NAME.vmx" hard nogui 2>/dev/null
+vmrun deleteVM "$VMROOT/$NAME.vmwarevm/$NAME.vmx" 2>/dev/null
+rm -r "$VMROOT/$NAME.vmwarevm" 2>/dev/null
