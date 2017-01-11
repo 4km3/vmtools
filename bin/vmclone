@@ -14,19 +14,23 @@ virt-clone                                 \
   --connect qemu:///system                 \
   --original $SOURCE                       \
   --name $TARGET                           \
-  --auto-clone 
+  --auto-clone
+
 sudo virt-customize                        \
   --connect qemu:///system                 \
   --add $LIBVIRT/$TARGET.qcow2             \
   --hostname $TARGET
+
 sudo virt-customize                        \
   --connect qemu:///system                 \
   --add $LIBVIRT/$TARGET.qcow2             \
   --mkdir $USERDIR/.ssh
+
 sudo virt-customize                        \
   --connect qemu:///system                 \
   --add $LIBVIRT/$TARGET.qcow2             \
   --copy-in authorized_keys:$USERDIR/.ssh/
+
 sudo virt-customize                        \
   --connect qemu:///system                 \
   --add $LIBVIRT/$TARGET.qcow2             \
