@@ -38,3 +38,9 @@ sudo virt-customize                        \
      'echo                                 \
      "%sudo  ALL=(ALL) NOPASSWD: ALL"      \
      > /etc/sudoers.d/nopasswd'
+
+sudo virt-customize                        \
+  --connect qemu:///system                 \
+  --add $LIBVIRT/$TARGET.qcow2             \
+  --run-command                            \
+     "chown sysadmin: $USERDIR/.ssh"
