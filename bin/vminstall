@@ -8,7 +8,8 @@ virt-install                                                                    
   --vcpus 1                                                                        \
   --os-type linux                                                                  \
   --os-variant ubuntu16.04                                                         \
-  --network bridge=virbr0                                                          \
+  --network network=default                                                        \
+  --network network=external                                                       \
   --graphics none                                                                  \
   --console pty,target_type=serial                                                 \
   --location 'http://archive.ubuntu.com/ubuntu/dists/xenial/main/installer-amd64/' \
@@ -17,6 +18,7 @@ virt-install                                                                    
       priority=critical                                                            \
       console=ttyS0,115200n8                                                       \
       serial                                                                       \
+      netcfg/choose_interface=ens2                                                 \
       url=http://192.168.122.1:8080/ubuntu-preseed                                 \
       console-keymaps-at/keymap=us                                                 \
       locale=en_US                                                                 \
