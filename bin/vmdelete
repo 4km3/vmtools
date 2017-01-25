@@ -1,4 +1,4 @@
-#!/usr/bin/env bash
+#!/usr/bin/env dash
 
 : ${1?"Usage: $0 VM_name"}
 
