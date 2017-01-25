@@ -2,8 +2,8 @@
 
 : ${1?"Usage: $0 VM_name"}
 
-for i in $@
-  do virsh -c qemu:///system destroy $i
-  virsh -c qemu:///system undefine $i
-  sudo rm -r /var/lib/libvirt/images/$i.qcow2
+for i in "$@"
+  do virsh -c qemu:///system destroy "$i"
+  virsh -c qemu:///system undefine "$i"
+  sudo rm -r /var/lib/libvirt/images/"$i".qcow2
 done
