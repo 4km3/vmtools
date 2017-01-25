@@ -7,7 +7,7 @@ virt-install                                                                    
   --disk path=/var/lib/libvirt/images/ubuntu1604.qcow2,size=20                     \
   --vcpus 1                                                                        \
   --os-type linux                                                                  \
-  --os-variant generic                                                             \
+  --os-variant ubuntu16.04                                                         \
   --network bridge=virbr0                                                          \
   --graphics none                                                                  \
   --console pty,target_type=serial                                                 \
