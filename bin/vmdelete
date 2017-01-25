@@ -4,6 +4,6 @@
 
 for i in $@
   do virsh -c qemu:///system destroy $i
-  virsh -c qemu:///system undefine $1
-  sudo rm -r /var/lib/libvirt/images/$1.qcow2
+  virsh -c qemu:///system undefine $i
+  sudo rm -r /var/lib/libvirt/images/$i.qcow2
 done
