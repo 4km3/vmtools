@@ -1,14 +1,7 @@
 #!/bin/bash
 
-VMROOT=$HOME'/Documents/Virtual Machines.localized'
+: ${1?"Usage: $0 VM_name"}
 
-if [ -z "$1" ];
-  then
-    echo 'VM name must be provided'
-    exit 0
-  else
-    NAME=$1
-fi
-
-echo "Stopping $NAME"
-vmrun stop "$VMROOT/$NAME.vmwarevm/$NAME.vmx" soft nogui
+for i in $@
+  do vmrun stop "$HOME/vm/$i.vmwarevm/$i.vmx" soft
+done

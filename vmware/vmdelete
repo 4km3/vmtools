@@ -4,4 +4,5 @@
 
 for i in $@
   do vmrun stop "$HOME/vm/$i.vmwarevm/$i.vmx" hard
+  vmrun deleteVM "$HOME/vm/$i.vmwarevm/$i.vmx"
 done

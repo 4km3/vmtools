@@ -1,38 +1,26 @@
 #!/bin/bash
 
-# TODO: reflow scripts to match Google guidelines
-VMROOT=$HOME'/Documents/Virtual Machines.localized'
-if [ -z "$2" ]; 
-  then 
-    SOURCE='ubuntu1610'
-  else 
-    SOURCE=$2
-fi
+TARGET=$1
+SOURCE=$2
 
-if [ -z "$1" ];
-  then
-    NAME=vm$RANDOM
-  else
-    NAME=$1
-fi
+: "${SOURCE:=ubuntu1604}"
+: "${TARGET:=vm$RANDOM}"
 
-echo "Cloning $SOURCE into $NAME"
-cp -R "$VMROOT/$SOURCE.vmwarevm/" "$VMROOT/$NAME.vmwarevm/"
+cp -R "$HOME/vm/$SOURCE.vmwarevm/" "$HOME/vm/$TARGET.vmwarevm/"
 for i in vmx vmxf vmsd plist nvram
-  do mv "$VMROOT/$NAME.vmwarevm/$SOURCE".$i "$VMROOT/$NAME.vmwarevm/$NAME".$i
+  do mv "$HOME/vm/$TARGET.vmwarevm/$SOURCE".$i "$HOME/vm/$TARGET.vmwarevm/$TARGET".$i
 done
 
-echo 'uuid.action = "create"' >> "$VMROOT/$NAME.vmwarevm/$NAME.vmx"
-sed -i.bak "s/$SOURCE/$NAME/g" "$VMROOT/$NAME.vmwarevm/$NAME.vmx"
-rm "$VMROOT/$NAME.vmwarevm/$NAME.vmx.bak"
-rm -r "$VMROOT/$NAME.vmwarevm/$SOURCE.vmx.lck"
+echo 'uuid.action = "create"' >> "$HOME/vm/$TARGET.vmwarevm/$TARGET.vmx"
+sed -i.bak "s/$SOURCE/$TARGET/g" "$HOME/vm/$TARGET.vmwarevm/$TARGET.vmx"
+rm "$HOME/vm/$TARGET.vmwarevm/$TARGET.vmx.bak"
+rm -r "$HOME/vm/$TARGET.vmwarevm/*.vmx.lck" 2>/dev/null
 
-echo "Starting instance..."
-vmrun start "$VMROOT/$NAME.vmwarevm/$NAME.vmx" nogui 2&>/dev/null
-until ssh -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null $SOURCE.local exit 2>/dev/null; do echo "Waiting for $NAME to start up..."; sleep 2; done
+vmrun start "$HOME/vm/$TARGET.vmwarevm/$TARGET.vmx" nogui 2&>/dev/null
+until ssh -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null $SOURCE.local exit 2>/dev/null; do sleep 2; done
 
-ssh -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null $SOURCE.local sudo sed -i'' "s/$SOURCE/$NAME/" /etc/hosts 2>/dev/null
-ssh -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null $SOURCE.local sudo hostnamectl set-hostname $NAME 2>/dev/null
+ssh -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null $SOURCE.local sudo sed -i'' "s/$SOURCE/$TARGET/" /etc/hosts 2>/dev/null
+ssh -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null $SOURCE.local sudo hostnamectl set-hostname $TARGET 2>/dev/null
 ssh -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null $SOURCE.local sudo reboot 2>/dev/null
 
-echo "$NAME started"
+echo "$TARGET.local started"
