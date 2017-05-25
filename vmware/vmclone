@@ -8,7 +8,8 @@ SOURCE=$2
 
 cp -R "$HOME/vm/$SOURCE.vmwarevm/" "$HOME/vm/$TARGET.vmwarevm/"
 for i in vmx vmxf vmsd plist nvram
-  do mv "$HOME/vm/$TARGET.vmwarevm/$SOURCE".$i "$HOME/vm/$TARGET.vmwarevm/$TARGET".$i
+  do mv "$HOME/vm/$TARGET.vmwarevm/$SOURCE".$i                                 \
+        "$HOME/vm/$TARGET.vmwarevm/$TARGET".$i
 done
 
 echo 'uuid.action = "create"' >> "$HOME/vm/$TARGET.vmwarevm/$TARGET.vmx"
@@ -17,10 +18,27 @@ rm "$HOME/vm/$TARGET.vmwarevm/$TARGET.vmx.bak"
 rm -r "$HOME/vm/$TARGET.vmwarevm/*.vmx.lck" 2>/dev/null
 
 vmrun start "$HOME/vm/$TARGET.vmwarevm/$TARGET.vmx" nogui 2&>/dev/null
-until ssh -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null $SOURCE.local exit 2>/dev/null; do sleep 2; done
+until ssh -o StrictHostKeyChecking=no                                          \
+          -o UserKnownHostsFile=/dev/null                                      \
+          $SOURCE.local exit 2>/dev/null;                                      \
+          do sleep 2;
+      done
 
-ssh -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null $SOURCE.local sudo sed -i'' "s/$SOURCE/$TARGET/" /etc/hosts 2>/dev/null
-ssh -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null $SOURCE.local sudo hostnamectl set-hostname $TARGET 2>/dev/null
-ssh -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null $SOURCE.local sudo reboot 2>/dev/null
+ssh -o StrictHostKeyChecking=no                                                \
+    -o UserKnownHostsFile=/dev/null                                            \
+    $SOURCE.local                                                              \
+    sudo sed -i'' "s/$SOURCE/$TARGET/" /etc/hosts                              \
+    2>/dev/null
+
+ssh -o StrictHostKeyChecking=no                                                \
+    -o UserKnownHostsFile=/dev/null                                            \
+    $SOURCE.local                                                              \
+    sudo hostnamectl set-hostname $TARGET                                      \
+    2>/dev/null
+
+ssh -o StrictHostKeyChecking=no                                                \
+    -o UserKnownHostsFile=/dev/null                                            \
+    $SOURCE.local                                                              \
+    sudo reboot 2>/dev/null
 
 echo "$TARGET.local started"
