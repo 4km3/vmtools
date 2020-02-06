@@ -61,7 +61,7 @@ d-i mirror/http/proxy string
 d-i mirror/http/mirror select es.archive.ubuntu.com
 
 # Suite to install.
-d-i mirror/suite string yakkety
+d-i mirror/suite string bionic
 # Suite to use for loading installer components (optional).
 #d-i mirror/udeb/suite string xenial
 # Components to use for loading installer components (optional).
@@ -226,7 +226,7 @@ tasksel tasksel/first multiselect openssh-server
 #tasksel tasksel/first multiselect kubuntu-desktop
 
 # Individual additional packages to install
-d-i pkgsel/include string openssh-server build-essential vim git curl docker.io docker-compose libguestfs-tools qemu-kvm ntp open-vm-tools dnsutils software-properties-common python-software-properties
+d-i pkgsel/include string openssh-server avahi-daemon
 # Whether to upgrade packages after debootstrap.
 # Allowed values: none, safe-upgrade, full-upgrade
 d-i pkgsel/upgrade select full-upgrade
