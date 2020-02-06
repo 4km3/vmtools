@@ -2,17 +2,16 @@
 
 virt-install                                                                       \
   --connect qemu:///system                                                         \
-  --name ubuntu1604                                                                \
-  --ram 2048                                                                       \
-  --disk path=/var/lib/libvirt/images/ubuntu1604.qcow2,size=20                     \
+  --name ubuntu1804                                                                \
+  --ram 4096                                                                       \
+  --disk path=/var/lib/libvirt/images/ubuntu1804.qcow2,size=20                     \
   --vcpus 1                                                                        \
   --os-type linux                                                                  \
-  --os-variant ubuntu16.04                                                         \
+  --os-variant ubuntu18.04                                                         \
   --network network=default                                                        \
-  --network network=external                                                       \
   --graphics none                                                                  \
   --console pty,target_type=serial                                                 \
-  --location 'http://archive.ubuntu.com/ubuntu/dists/xenial/main/installer-amd64/' \
+  --location 'http://archive.ubuntu.com/ubuntu/dists/bionic/main/installer-amd64/' \
   --extra-args                                                                     \
      'auto=true                                                                    \
       priority=critical                                                            \
