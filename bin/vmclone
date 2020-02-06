@@ -16,31 +16,13 @@ virt-clone                                 \
   --name $TARGET                           \
   --auto-clone
 
-sudo virt-customize                        \
-  --connect qemu:///system                 \
-  --add $LIBVIRT/$TARGET.qcow2             \
-  --hostname $TARGET
-
-sudo virt-customize                        \
-  --connect qemu:///system                 \
-  --add $LIBVIRT/$TARGET.qcow2             \
-  --mkdir $USERDIR/.ssh
-
-sudo virt-customize                        \
-  --connect qemu:///system                 \
-  --add $LIBVIRT/$TARGET.qcow2             \
-  --copy-in authorized_keys:$USERDIR/.ssh/
+sudo virt-sysprep                           \
+   --connect qemu:///system                 \
+   --domain  $TARGET                        \
+   --hostname $TARGET
 
 sudo virt-customize                        \
   --connect qemu:///system                 \
   --add $LIBVIRT/$TARGET.qcow2             \
   --run-command                            \
-     'echo                                 \
-     "%sudo  ALL=(ALL) NOPASSWD: ALL"      \
-     > /etc/sudoers.d/nopasswd'
-
-sudo virt-customize                        \
-  --connect qemu:///system                 \
-  --add $LIBVIRT/$TARGET.qcow2             \
-  --run-command                            \
-     "chown sysadmin: $USERDIR/.ssh"
+     'dpkg-reconfigure openssh-server'
