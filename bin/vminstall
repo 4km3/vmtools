@@ -1,24 +1,33 @@
 #!/usr/bin/env bash
 
-virt-install                                                                       \
-  --connect qemu:///system                                                         \
-  --name ubuntu1804                                                                \
-  --ram 4096                                                                       \
-  --disk path=/var/lib/libvirt/images/ubuntu1804.qcow2,size=20                     \
-  --vcpus 1                                                                        \
-  --os-type linux                                                                  \
-  --os-variant ubuntu18.04                                                         \
-  --network network=default                                                        \
-  --graphics none                                                                  \
-  --console pty,target_type=serial                                                 \
-  --location 'http://archive.ubuntu.com/ubuntu/dists/bionic/main/installer-amd64/' \
-  --extra-args                                                                     \
-     'auto=true                                                                    \
-      priority=critical                                                            \
-      console=ttyS0,115200n8                                                       \
-      serial                                                                       \
-      netcfg/choose_interface=ens2                                                 \
-      url=http://192.168.122.1:8080/ubuntu-preseed                                 \
-      console-keymaps-at/keymap=us                                                 \
-      locale=en_US                                                                 \
-      hostname=ubuntu'
+: "${RAM:=4096}"
+: "${VCPUS:=2}"
+: "${DISKSIZE:=20}"
+: "${NETDEV:=ens2}"
+: "${KEYMAP:=us}"
+: "${DISTRO:=bionic}"
+TARGET=$1
+
+virt-install                                                                           \
+  --connect qemu:///system                                                             \
+  --name ${TARGET}                                                                     \
+  --ram ${RAM}                                                                         \
+  --disk path=/var/lib/libvirt/images/${TARGET}.qcow2,size=${DISKSIZE}                 \
+  --vcpus ${VCPUS}                                                                     \
+  --os-type linux                                                                      \
+  --os-variant ubuntu18.04                                                             \
+  --network network=default                                                            \
+  --graphics none                                                                      \
+  --console pty,target_type=serial                                                     \
+  --location "http://archive.ubuntu.com/ubuntu/dists/${DISTRO}/main/installer-amd64/"  \
+  --extra-args                                                                         \
+     "auto=true                                                                        \
+      priority=critical                                                                \
+      console=ttyS0,115200n8                                                           \
+      serial                                                                           \
+      netcfg/choose_interface=${NETDEV}                                                \
+      url=https://raw.githubusercontent.com/4km3/vmtools/master/staging/ubuntu-preseed \
+      debian-installer/allow_unauthenticated_ssl=true                                  \
+      console-keymaps-at/keymap=${KEYMAP}                                              \
+      locale=en_US                                                                     \
+      hostname=ubuntu"
