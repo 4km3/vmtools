@@ -1,6 +1,7 @@
 #!/usr/bin/env bash
 
 : ${1?"Usage: $0 VM_name"}
+
 for i in $@
   do virsh -c qemu:///system start $i
 done
