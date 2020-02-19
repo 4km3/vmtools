@@ -36,3 +36,5 @@ virt-install                                                                    
       console-keymaps-at/keymap=${KEYMAP}                                              \
       locale=en_US                                                                     \
       hostname=ubuntu"
+
+EDITOR="sed -i \"s#type='direct'#type='direct' trustGuestRxFilters='yes'#\"" virsh -c qemu:///system edit ubuntu1804
