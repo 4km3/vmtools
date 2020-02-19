@@ -1,12 +1,16 @@
 #!/usr/bin/env bash
 
+TARGET=$1
+HOST_NET=$(ip route | grep default | sed -e "s/^.*dev.//" -e "s/.proto.*//")
+
+: "${TARGET:=ubuntu1804}"
 : "${RAM:=4096}"
 : "${VCPUS:=2}"
 : "${DISKSIZE:=20}"
 : "${NETDEV:=ens2}"
 : "${KEYMAP:=us}"
 : "${DISTRO:=bionic}"
-TARGET=$1
+: "${HOST_NET:=eno1}"
 
 virt-install                                                                           \
   --connect qemu:///system                                                             \
@@ -16,7 +20,7 @@ virt-install                                                                    
   --vcpus ${VCPUS}                                                                     \
   --os-type linux                                                                      \
   --os-variant ubuntu18.04                                                             \
-  --network network=default                                                            \
+  --network type=direct,source=${HOST_NET},source.mode=bridge                          \
   --graphics none                                                                      \
   --console pty,target_type=serial                                                     \
   --location "http://archive.ubuntu.com/ubuntu/dists/${DISTRO}/main/installer-amd64/"  \
