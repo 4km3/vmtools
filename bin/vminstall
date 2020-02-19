@@ -22,6 +22,7 @@ virt-install                                                                    
   --os-variant ubuntu18.04                                                             \
   --network type=direct,source=${HOST_NET},source.mode=bridge                          \
   --graphics none                                                                      \
+  --noreboot                                                                           \
   --console pty,target_type=serial                                                     \
   --location "http://archive.ubuntu.com/ubuntu/dists/${DISTRO}/main/installer-amd64/"  \
   --extra-args                                                                         \
