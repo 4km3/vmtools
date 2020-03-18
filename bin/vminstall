@@ -37,4 +37,4 @@ virt-install                                                                    
       locale=en_US                                                                     \
       hostname=ubuntu"
 
-EDITOR="sed -i \"s#type='direct'#type='direct' trustGuestRxFilters='yes'#\"" virsh -c qemu:///system edit ubuntu1804
+EDITOR="sed -i \"s#type='direct'#type='direct' trustGuestRxFilters='yes'#\"" virsh -c qemu:///system edit "$TARGET"
