@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-TARGET=$1
+TARGET="$1"
 HOST_NET=$(ip route | grep default | sed -e "s/^.*dev.//" -e "s/.proto.*//")
 
 : "${TARGET:=ubuntu1804}"
