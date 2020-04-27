@@ -5,7 +5,7 @@ set -e
 TARGET=$1
 SOURCE=$2
 
-: "${SOURCE:=ubuntu1804}"
+: "${SOURCE:=ubuntu2004}"
 : "${TARGET:=vm$RANDOM}"
 : "${LIBVIRT:=/var/lib/libvirt/images}"
 
