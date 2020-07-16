@@ -1,4 +1,4 @@
-#### Contents of the preconfiguration file (for focal)
+#### Contents of the preconfiguration file (for xenial)
 ### Localization
 # Preseeding only locale sets language, country and locale.
 d-i debian-installer/locale string en_US
@@ -40,7 +40,7 @@ d-i mirror/http/proxy string
 d-i mirror/http/mirror select es.archive.ubuntu.com
 
 # Suite to install.
-d-i mirror/suite string focal
+d-i mirror/suite string bionic
 
 ### Account setup
 # Skip creation of a root account (normal user account will be able to
