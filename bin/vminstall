@@ -3,13 +3,13 @@
 TARGET="$1"
 HOST_NET=$(ip route | grep default | sed -e "s/^.*dev.//" -e "s/.proto.*//")
 
-: "${TARGET:=ubuntu1804}"
+: "${TARGET:=ubuntu2004}"
 : "${RAM:=4096}"
 : "${VCPUS:=2}"
 : "${DISKSIZE:=20}"
 : "${NETDEV:=ens2}"
 : "${KEYMAP:=us}"
-: "${DISTRO:=bionic}"
+: "${DISTRO:=focal}"
 : "${HOST_NET:=eno1}"
 
 virt-install                                                                           \
