@@ -15,10 +15,11 @@ virt-clone                                 \
   --name $TARGET                           \
   --auto-clone
 
-sudo virt-sysprep                           \
-   --connect qemu:///system                 \
-   --domain  $TARGET                        \
-   --hostname $TARGET
+sudo virt-sysprep                          \
+   --connect qemu:///system                \
+   --domain  $TARGET                       \
+   --hostname $TARGET                      \
+   --operations defaults,-ssh-userdir
 
 sudo virt-customize                        \
   --connect qemu:///system                 \
