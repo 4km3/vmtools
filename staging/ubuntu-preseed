@@ -37,7 +37,7 @@ d-i mirror/http/proxy string
 # Alternatively: by default, the installer uses CC.archive.ubuntu.com where
 # CC is the ISO-3166-2 code for the selected country. You can preseed this
 # so that it does so without asking.
-d-i mirror/http/mirror select es.archive.ubuntu.com
+d-i mirror/http/mirror select archive.ubuntu.com
 
 # Suite to install.
 d-i mirror/suite string focal
