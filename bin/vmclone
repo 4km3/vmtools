@@ -2,27 +2,27 @@
 
 set -e
 
-TARGET=$1
-SOURCE=$2
+TARGET="$1"
+SOURCE="$2"
 
 : "${SOURCE:=ubuntu2004}"
 : "${TARGET:=vm$RANDOM}"
 : "${LIBVIRT:=/var/lib/libvirt/images}"
 
-virt-clone                                 \
-  --connect qemu:///system                 \
-  --original $SOURCE                       \
-  --name $TARGET                           \
-  --auto-clone
+virt-clone                                      \
+    --connect qemu:///system                    \
+    --original "$SOURCE"                        \
+    --name "$TARGET"                            \
+    --auto-clone                                \
+ 
+sudo virt-sysprep                               \
+    --connect qemu:///system                    \
+    --domain "$TARGET"                          \
+    --hostname "$TARGET"                        \
+    --operations defaults,-ssh-userdir          \
 
-sudo virt-sysprep                          \
-   --connect qemu:///system                \
-   --domain  $TARGET                       \
-   --hostname $TARGET                      \
-   --operations defaults,-ssh-userdir
-
-sudo virt-customize                        \
-  --connect qemu:///system                 \
-  --add $LIBVIRT/$TARGET.qcow2             \
-  --run-command                            \
-     'dpkg-reconfigure openssh-server'
+sudo virt-customize                             \
+    --connect qemu:///system                    \
+    --add "$LIBVIRT"/"$TARGET".qcow2            \
+    --run-command                               \
+    'dpkg-reconfigure openssh-server'

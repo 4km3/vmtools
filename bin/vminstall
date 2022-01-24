@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
 TARGET="$1"
-HOST_NET=$(ip route | grep default | sed -e "s/^.*dev.//" -e "s/.proto.*//")
+HOST_NET=$(ip route | grep default | sed -e 's/^.*dev.//' -e 's/.proto.*//')
 
 : "${TARGET:=ubuntu2004}"
 : "${RAM:=4096}"
@@ -12,29 +12,29 @@ HOST_NET=$(ip route | grep default | sed -e "s/^.*dev.//" -e "s/.proto.*//")
 : "${DISTRO:=focal}"
 : "${HOST_NET:=eno1}"
 
-virt-install                                                                           \
-  --connect qemu:///system                                                             \
-  --name ${TARGET}                                                                     \
-  --ram ${RAM}                                                                         \
-  --disk path=/var/lib/libvirt/images/${TARGET}.qcow2,size=${DISKSIZE}                 \
-  --vcpus ${VCPUS}                                                                     \
-  --os-type linux                                                                      \
-  --os-variant ubuntu20.04                                                             \
-  --network type=direct,source=${HOST_NET},source.mode=bridge                          \
-  --graphics none                                                                      \
-  --noreboot                                                                           \
-  --console pty,target_type=serial                                                     \
-  --location "http://archive.ubuntu.com/ubuntu/dists/${DISTRO}/main/installer-amd64/"  \
-  --extra-args                                                                         \
-     "auto=true                                                                        \
-      priority=critical                                                                \
-      console=ttyS0,115200n8                                                           \
-      serial                                                                           \
-      netcfg/choose_interface=${NETDEV}                                                \
-      url=https://raw.githubusercontent.com/4km3/vmtools/master/staging/ubuntu-preseed \
-      debian-installer/allow_unauthenticated_ssl=true                                  \
-      console-keymaps-at/keymap=${KEYMAP}                                              \
-      locale=en_US                                                                     \
+virt-install                                                                          \
+  --connect qemu:///system                                                            \
+  --name ${TARGET}                                                                    \
+  --ram ${RAM}                                                                        \
+  --disk path=/var/lib/libvirt/images/${TARGET}.qcow2,size=${DISKSIZE}                \
+  --vcpus ${VCPUS}                                                                    \
+  --os-type linux                                                                     \
+  --os-variant ubuntu20.04                                                            \
+  --network type=direct,source=${HOST_NET},source.mode=bridge                         \
+  --graphics none                                                                     \
+  --noreboot                                                                          \
+  --console pty,target_type=serial                                                    \
+  --location "http://archive.ubuntu.com/ubuntu/dists/${DISTRO}/main/installer-amd64/" \
+  --extra-args                                                                        \
+  "auto=true
+      priority=critical
+      console=ttyS0,115200n8
+      serial
+      netcfg/choose_interface=${NETDEV}
+      url=https://raw.githubusercontent.com/4km3/vmtools/master/staging/ubuntu-preseed
+      debian-installer/allow_unauthenticated_ssl=true
+      console-keymaps-at/keymap=${KEYMAP}
+      locale=en_US
       hostname=ubuntu"
 
 EDITOR="sed -i \"s#type='direct'#type='direct' trustGuestRxFilters='yes'#\"" virsh -c qemu:///system edit "$TARGET"
