@@ -18,8 +18,7 @@ virt-install                                                                    
   --ram ${RAM}                                                                        \
   --disk path=/var/lib/libvirt/images/${TARGET}.qcow2,size=${DISKSIZE}                \
   --vcpus ${VCPUS}                                                                    \
-  --os-type linux                                                                     \
-  --os-variant ubuntu20.04                                                            \
+  --osinfo ubuntu20.04                                                                \
   --network type=direct,source=${HOST_NET},source.mode=bridge                         \
   --graphics none                                                                     \
   --noreboot                                                                          \
