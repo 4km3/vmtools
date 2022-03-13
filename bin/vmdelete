@@ -3,7 +3,5 @@
 : "${1?"Usage: $0 VM_name"}"
 
 for vm in "$@"; do
-  virsh -c qemu:///system destroy "$vm"
-  virsh -c qemu:///system undefine "$vm"
-  sudo rm -r /var/lib/libvirt/images/"$vm".qcow2
+  virsh -c qemu:///system "destroy '$vm'; undefine '$vm' --remove-all-storage"
 done
