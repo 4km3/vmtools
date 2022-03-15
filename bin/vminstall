@@ -37,3 +37,6 @@ virt-install                                                                    
       hostname=ubuntu"
 
 EDITOR="sed -i \"s#type='direct'#type='direct' trustGuestRxFilters='yes'#\"" virsh -c qemu:///system edit "$TARGET"
+
+# The previous process mangles the terminal, so issue a reset to make it usable again
+reset
