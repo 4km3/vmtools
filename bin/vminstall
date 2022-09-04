@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
 TARGET="$1"
-HOST_NET=$(ip route | grep default | sed -e 's/^.*dev.//' -e 's/.proto.*//')
+HOST_NET=$(ip route show to default | sed -e 's/^.*dev.//' -e 's/.proto.*//')
 
 : "${TARGET:=ubuntu2004}"
 : "${RAM:=4096}"
