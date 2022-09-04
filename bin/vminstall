@@ -12,19 +12,19 @@ HOST_NET=$(ip route | grep default | sed -e 's/^.*dev.//' -e 's/.proto.*//')
 : "${DISTRO:=focal}"
 : "${HOST_NET:=eno1}"
 
-virt-install                                                                          \
-  --connect qemu:///system                                                            \
-  --name ${TARGET}                                                                    \
-  --ram ${RAM}                                                                        \
-  --disk path=/var/lib/libvirt/images/${TARGET}.qcow2,size=${DISKSIZE}                \
-  --vcpus ${VCPUS}                                                                    \
-  --osinfo ubuntu20.04                                                                \
-  --network type=direct,source=${HOST_NET},source.mode=bridge                         \
-  --graphics none                                                                     \
-  --noreboot                                                                          \
-  --console pty,target_type=serial                                                    \
-  --location "http://archive.ubuntu.com/ubuntu/dists/${DISTRO}/main/installer-amd64/" \
-  --extra-args                                                                        \
+virt-install                                                                                        \
+  --connect qemu:///system                                                                          \
+  --name ${TARGET}                                                                                  \
+  --ram ${RAM}                                                                                      \
+  --disk path=/var/lib/libvirt/images/${TARGET}.qcow2,size=${DISKSIZE}                              \
+  --vcpus ${VCPUS}                                                                                  \
+  --osinfo ubuntu20.04                                                                              \
+  --network type=direct,source=${HOST_NET},source.mode=bridge,xpath.set=./@trustGuestRxFilters=yes  \
+  --graphics none                                                                                   \
+  --noreboot                                                                                        \
+  --console pty,target_type=serial                                                                  \
+  --location "http://archive.ubuntu.com/ubuntu/dists/${DISTRO}/main/installer-amd64/"               \
+  --extra-args                                                                                      \
   "auto=true
       priority=critical
       console=ttyS0,115200n8
@@ -35,8 +35,6 @@ virt-install                                                                    
       console-keymaps-at/keymap=${KEYMAP}
       locale=en_US
       hostname=ubuntu"
-
-EDITOR="sed -i \"s#type='direct'#type='direct' trustGuestRxFilters='yes'#\"" virsh -c qemu:///system edit "$TARGET"
 
 # The previous process mangles the terminal, so issue a reset to make it usable again
 reset
