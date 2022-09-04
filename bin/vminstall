@@ -7,7 +7,6 @@ HOST_NET=$(ip route | grep default | sed -e 's/^.*dev.//' -e 's/.proto.*//')
 : "${RAM:=4096}"
 : "${VCPUS:=2}"
 : "${DISKSIZE:=20}"
-: "${NETDEV:=ens2}"
 : "${KEYMAP:=us}"
 : "${DISTRO:=focal}"
 : "${HOST_NET:=eno1}"
@@ -29,7 +28,6 @@ virt-install                                                                    
       priority=critical
       console=ttyS0,115200n8
       serial
-      netcfg/choose_interface=${NETDEV}
       url=https://raw.githubusercontent.com/4km3/vmtools/master/staging/ubuntu-preseed
       debian-installer/allow_unauthenticated_ssl=true
       console-keymaps-at/keymap=${KEYMAP}
